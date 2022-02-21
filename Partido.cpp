@@ -14,6 +14,8 @@ Partido::Partido(int num_partido, int votos_legenda, string nome, string sigla){
     this->votosTotais = 0;
     this->candidatosDoPartido = list<Candidato>();
 }
+//destrutor
+Partido::~Partido(){}
 
 //getNumPartido
 int Partido::getNumPartido(){
@@ -67,48 +69,48 @@ void Partido::setVotosTotais(int votosTotais){
 void Partido::addCandidato(Candidato candidato){
     this->candidatosDoPartido.push_back(candidato);
 }
-//removeCandidato
-void Partido::removeCandidato(Candidato candidato){
-    this->candidatosDoPartido.remove(candidato);
-}
-//removeCandidato
-void Partido::removeCandidato(int numero){
-    list<Candidato>::iterator it;
-    for(it = this->candidatosDoPartido.begin(); it != this->candidatosDoPartido.end(); it++){
-        if(it->getNumero() == numero){
-            this->candidatosDoPartido.erase(it);
-            break;
-        }
-    }
-}
-//getCandidato
-Candidato Partido::getCandidato(int numero){
-    list<Candidato>::iterator it;
-    for(it = this->candidatosDoPartido.begin(); it != this->candidatosDoPartido.end(); it++){
-        if(it->getNumero() == numero){
-            return *it;
-        }
-    }
-}
-//getCandidatos
-list<Candidato> Partido::getCandidatos(){
-    return this->candidatosDoPartido;
-}
-//setCandidatos
-void Partido::setCandidatos(list<Candidato> candidatos){
-    this->candidatosDoPartido = candidatos;
-}
-//print
-void Partido::print(){
-    cout << "Partido: " << this->num_partido << endl;
-    cout << "Votos Legenda: " << this->votos_legenda << endl;
-    cout << "Nome: " << this->nome << endl;
-    cout << "Sigla: " << this->sigla << endl;
-    cout << "Votos Nominais: " << this->votosNominais_partido << endl;
-    cout << "Votos Totais: " << this->votosTotais << endl;
-    cout << "Candidatos: " << endl;
-    list<Candidato>::iterator it;
-    for(it = this->candidatosDoPartido.begin(); it != this->candidatosDoPartido.end(); it++){
-        it->print();
-    }
-}
+// removeCandidato
+// void Partido::removeCandidato(Candidato candidato){
+//     this->candidatosDoPartido.remove(candidato);
+// }
+// //removeCandidato
+// void Partido::removeCandidato(int numero){
+//     list<Candidato>::iterator it;
+//     for(it = this->candidatosDoPartido.begin(); it != this->candidatosDoPartido.end(); it++){
+//         if(it->getNumero() == numero){
+//             this->candidatosDoPartido.erase(it);
+//             break;
+//         }
+//     }
+// }
+// //getCandidato
+// Candidato Partido::getCandidato(int numero){
+//     list<Candidato>::iterator it;
+//     for(it = this->candidatosDoPartido.begin(); it != this->candidatosDoPartido.end(); it++){
+//         if(it->getNumero() == numero){
+//             return *it;
+//         }
+//     }
+// }
+// //getCandidatos
+// list<Candidato> Partido::getCandidatos(){
+//     return this->candidatosDoPartido;
+// }
+// //setCandidatos
+// void Partido::setCandidatos(list<Candidato> candidatos){
+//     this->candidatosDoPartido = candidatos;
+// }
+// //print
+// void Partido::print(){
+//     cout << "Partido: " << this->num_partido << endl;
+//     cout << "Votos Legenda: " << this->votos_legenda << endl;
+//     cout << "Nome: " << this->nome << endl;
+//     cout << "Sigla: " << this->sigla << endl;
+//     cout << "Votos Nominais: " << this->votosNominais_partido << endl;
+//     cout << "Votos Totais: " << this->votosTotais << endl;
+//     cout << "Candidatos: " << endl;
+//     list<Candidato>::iterator it;
+//     for(it = this->candidatosDoPartido.begin(); it != this->candidatosDoPartido.end(); it++){
+//         it->print();
+//     }
+// }

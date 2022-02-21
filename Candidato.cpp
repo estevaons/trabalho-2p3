@@ -16,6 +16,8 @@ Candidato::Candidato(int numero, int votos_nominais, string situacao, string nom
     this->destino_voto = destino_voto;
     this->num_partido = num_partido;
 }
+//destrutor
+Candidato::~Candidato(){}
 
 //getNumero
 int Candidato::getNumero(){
