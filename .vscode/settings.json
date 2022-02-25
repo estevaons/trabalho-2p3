@@ -4,6 +4,9 @@
         "xstring": "cpp",
         "xtree": "cpp",
         "list": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "ostream": "cpp",
+        "map": "cpp",
+        "vector": "cpp"
     }
 }

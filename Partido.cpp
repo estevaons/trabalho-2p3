@@ -41,6 +41,18 @@ int Partido::getVotosNominais(){
 int Partido::getVotosTotais(){
     return this->votosTotais;
 }
+
+int Partido::getQtdEleitos(){
+    int qtdEleitos = 0;
+    for(list<Candidato>::iterator it = candidatosDoPartido.begin(); it != candidatosDoPartido.end(); it++){
+        if(it->getSituacao() == "Eleito"){
+            qtdEleitos++;
+        }
+    }
+    return qtdEleitos;
+}
+
+
 //setNumPartido
 void Partido::setNumPartido(int num_partido){
     this->num_partido = num_partido;
@@ -69,6 +81,8 @@ void Partido::setVotosTotais(int votosTotais){
 void Partido::addCandidato(Candidato candidato){
     this->candidatosDoPartido.push_back(candidato);
 }
+
+
 // removeCandidato
 // void Partido::removeCandidato(Candidato candidato){
 //     this->candidatosDoPartido.remove(candidato);

@@ -16,10 +16,11 @@ class Partido {
         int votosNominais_partido;
         int votosTotais;
 
-        //lista de candidatos
-        list<Candidato> candidatosDoPartido;
+      
 
     public:
+      //lista de candidatos
+        list<Candidato> candidatosDoPartido;
         Partido();
         Partido(int num_partido, int votos_legenda, string nome, string sigla);
         ~Partido();
@@ -29,6 +30,7 @@ class Partido {
         string getSigla();
         int getVotosNominais();
         int getVotosTotais();
+        int getQtdEleitos();
         void setNumPartido(int num_partido);
         void setVotosLegenda(int votos_legenda);
         void setNome(string nome);
