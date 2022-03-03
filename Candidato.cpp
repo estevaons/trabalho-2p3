@@ -56,7 +56,7 @@ int Candidato::getNumPartido(){
     return this->num_partido;
 }
 //getIdade
-int Candidato::getIdade(){
+int Candidato::getIdade(string data){
     return this->idade;
 }
 //getRank

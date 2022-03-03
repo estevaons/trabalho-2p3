@@ -7,6 +7,8 @@
 #include <list>
 #include "Candidato.h"
 #include "Partido.h"
+#include <math.h>
+#include <time.h>
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -27,6 +29,17 @@ string readFileIntoString(const string& path) {
 
 int main()
 {   
+
+    //criar data 29/12/2020
+    time_t t = time(NULL);
+    struct tm *tm = localtime(&t);
+    int dia = 15;
+    int mes = 11;
+    int ano = 2020;
+    string data = to_string(dia) + "/" + to_string(mes) + "/" + to_string(ano);
+
+    cout<<data<<endl;
+
     int contador = 0;
     list<Candidato> candidatos = list<Candidato>();
     string filename("candidatos.csv");
@@ -56,12 +69,7 @@ int main()
         Candidato candidato(stoi(row[0]), stoi(row[1]), row[2], row[3], row[4], row[5], stoi(row[6]), row[7], stoi(row[8]));
         candidatos.push_back(candidato);
     }
-    //imprimir lista de candidatos
-    // for(auto& candidato : candidatos){
-    //     cout << candidato.getNumero() << " " << candidato.getVotosNominais() << " " << candidato.getSituacao() << " " << candidato.getNome() << " " << candidato.getNomeUrna() << " " << candidato.getSexo() << " " << candidato.getDataNascimento() << " " << candidato.getDestinoVoto() << " " << candidato.getNumPartido() << endl;
-    // }
-
-
+  
 
 
     contador = 0;
@@ -93,11 +101,6 @@ int main()
         Partido partido (stoi(row[0]),stoi(row[1]),row[2],row[3]);
         partidos.push_back(partido);
     }
-    //imprimir lista de partidos
-    // for(auto& partido : partidos){
-    //     cout << partido.getNumPartido() << " " << partido.getVotosLegenda() << " " << partido.getNome() << " " << partido.getSigla() << endl;
-    // }
-
 
     //ordenar candidatos pelo numero de votos e por idade
     candidatos.sort([](Candidato& a, Candidato& b){
@@ -216,20 +219,6 @@ int main()
      // 6.Votos totalizados por partido e número de candidatos eleitos;
 
      
-        // for(Partidos partido : partidos){  
-        //     int votosPartido = 0;   
-        //     for(Candidato candidato : candidatos){
-        //         if(candidato.getDestino_voto().equals("Válido")){
-        //             if(candidato.getNum_partido() == partido.getNum_partido()){                   
-        //             votosPartido += candidato.getVotos_nominais();
-        //             partido.candidatosDoPartido.add(candidato);
-        //             }
-        //         }           
-        //     }
-        //     partido.setVotosNominais_partido(votosPartido);       
-        //     partido.setVotosTotais(partido.getVotosNominais_partido() + partido.getVotosLegenda());
-       
-        // }
         for(auto& partido: partidos){
             int votosPartido = 0;
             for(auto& candidato: candidatos){
@@ -280,7 +269,53 @@ int main()
                 cout << cont << " - " << partido.getSigla() << " - " << partido.getNumPartido() << ", " << partido.getVotosTotais() << " voto (" << partido.getVotosNominais() << " nominal e " << partido.getVotosLegenda() << " de legenda), " << partido.getQtdEleitos() << " candidatos eleitos" << endl;
             }
         }
-      
+
+        //7. Votos de legenda (com a porcentagem destes votos frente ao total de votos no partido)
+
+          //ordernar partidos por votos de legenda
+        partidos.sort([](Partido& a, Partido& b){
+            if(a.getVotosLegenda() == b.getVotosLegenda()){
+                if(a.getVotosNominais() == b.getVotosNominais()){
+                    return a.getNumPartido() < b.getNumPartido();
+                }
+                return a.getNumPartido() < b.getNumPartido();
+            }
+            return a.getVotosLegenda() > b.getVotosLegenda();
+        });
+
+        cout << "\nVotação dos partidos (apenas votos de legenda):" << endl;
+        cont = 0;
+
+        for(auto& partido: partidos){
+            if(partido.getVotosLegenda() != 0){
+                float porcentagem = (float)partido.getVotosLegenda() / (float)partido.getVotosTotais() * 100;
+                //duas casas decimais
+                porcentagem = roundf(porcentagem * 100) / 100;
+                cont++;
+                cout << cont << " - " << partido.getSigla() << " - " << partido.getNumPartido() << ", " << partido.getVotosLegenda() << " votos de legenda (" << porcentagem << "%)" << endl;
+            }else{
+                cont++;
+                cout << cont << " - " << partido.getSigla() << " - " << partido.getNumPartido() << ", " << partido.getVotosLegenda() << " voto de legenda (proporção não calculada, 0 voto no partido)" << endl;
+                continue;
+            }
+        }
+
+           //      8.8. Primeiro e último colocados de cada partido (com nome da urna, número do candidato e total de votos
+        // nominais). Partidos que não possuírem candidatos com um número positivo de votos válidos devem ser
+        // ignorados;
+
+        cout << "\nPrimeiro e último colocados de cada partido:" << endl;
+    
+    
+        for(auto& partido: partidos){
+            partido.candidatosDoPartido.sort([](Candidato& a, Candidato& b){
+                if(a.getVotosNominais() == b.getVotosNominais()){
+                    return a.getIdade(data) - b.getIdade(data);
+                }
+                return a.getVotosNominais() - b.getVotosNominais();
+            });
+        }
+
 
 
     exit(EXIT_SUCCESS);

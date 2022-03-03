@@ -32,7 +32,7 @@ class Candidato {
         time_t getDataNascimento();
         string getDestinoVoto();
         int getNumPartido();
-        int getIdade();
+        int getIdade(string data);
         int getRank();
         void setNumero(int numero);
         void setVotosNominais(int votos_nominais);
