@@ -14,14 +14,14 @@ class Candidato {
         string nome;
         string nome_urna;
         string sexo;
-        time_t dataNascimento;
+        string dataNascimento;
         string destino_voto;
         int num_partido;
         int idade;
         int rank;
     public:
         Candidato();
-        Candidato(int numero, int votos_nominais, string situacao, string nome, string nome_urna, string sexo, time_t dataNascimento, string destino_voto, int num_partido);
+        Candidato(int numero, int votos_nominais, string situacao, string nome, string nome_urna, string sexo, string dataNascimento, string destino_voto, int num_partido);
         ~Candidato();
         int getNumero();
         int getVotosNominais();
@@ -29,7 +29,7 @@ class Candidato {
         string getNome();
         string getNomeUrna();
         string getSexo();
-        time_t getDataNascimento();
+        string getDataNascimento();
         string getDestinoVoto();
         int getNumPartido();
         int getIdade(string data);
@@ -40,7 +40,7 @@ class Candidato {
         void setNome(string nome);
         void setNomeUrna(string nome_urna);
         void setSexo(string sexo);
-        void setDataNascimento(time_t dataNascimento);
+        void setDataNascimento(string dataNascimento);
         void setDestinoVoto(string destino_voto);
         void setNumPartido(int num_partido);
         void setIdade(int idade);

@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Candidato::Candidato(int numero, int votos_nominais, string situacao, string nome, string nome_urna, string sexo, time_t dataNascimento, string destino_voto, int num_partido){
+Candidato::Candidato(int numero, int votos_nominais, string situacao, string nome, string nome_urna, string sexo, string dataNascimento, string destino_voto, int num_partido){
     this->numero = numero;
     this->votos_nominais = votos_nominais;
     this->situacao = situacao;
@@ -44,7 +44,7 @@ string Candidato::getSexo(){
     return this->sexo;
 }
 //getDataNascimento
-time_t Candidato::getDataNascimento(){
+string Candidato::getDataNascimento(){
     return this->dataNascimento;
 }
 //getDestinoVoto
@@ -57,7 +57,29 @@ int Candidato::getNumPartido(){
 }
 //getIdade
 int Candidato::getIdade(string data){
-    return this->idade;
+    //calcular idade
+    int ano, mes, dia;
+    int ano_nasc, mes_nasc, dia_nasc;
+    int idade;
+    //separar data
+    ano = stoi(data.substr(6,4));
+    mes = stoi(data.substr(3,2));
+    dia = stoi(data.substr(0,2));
+    //separar data de nascimento
+    ano_nasc = stoi(this->dataNascimento.substr(6,4));
+    mes_nasc = stoi(this->dataNascimento.substr(3,2));
+    dia_nasc = stoi(this->dataNascimento.substr(0,2));
+    //calcular idade
+    idade = ano - ano_nasc;
+    if(mes < mes_nasc){
+        idade--;
+    }
+    else if(mes == mes_nasc){
+        if(dia < dia_nasc){
+            idade--;
+        }
+    }
+    return idade;
 }
 //getRank
 int Candidato::getRank(){
@@ -88,7 +110,7 @@ void Candidato::setSexo(string sexo){
     this->sexo = sexo;
 }
 //setDataNascimento
-void Candidato::setDataNascimento(time_t dataNascimento){
+void Candidato::setDataNascimento(string dataNascimento){
     this->dataNascimento = dataNascimento;
 }
 //setDestinoVoto

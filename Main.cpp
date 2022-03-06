@@ -9,6 +9,7 @@
 #include "Partido.h"
 #include <math.h>
 #include <time.h>
+#include <iomanip>
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -30,15 +31,7 @@ string readFileIntoString(const string& path) {
 int main()
 {   
 
-    //criar data 29/12/2020
-    time_t t = time(NULL);
-    struct tm *tm = localtime(&t);
-    int dia = 15;
-    int mes = 11;
-    int ano = 2020;
-    string data = to_string(dia) + "/" + to_string(mes) + "/" + to_string(ano);
-
-    cout<<data<<endl;
+  
 
     int contador = 0;
     list<Candidato> candidatos = list<Candidato>();
@@ -66,7 +59,7 @@ int main()
             contador++;
             continue;
         }
-        Candidato candidato(stoi(row[0]), stoi(row[1]), row[2], row[3], row[4], row[5], stoi(row[6]), row[7], stoi(row[8]));
+        Candidato candidato(stoi(row[0]), stoi(row[1]), row[2], row[3], row[4], row[5],row[6], row[7], stoi(row[8]));
         candidatos.push_back(candidato);
     }
   
@@ -306,16 +299,158 @@ int main()
 
         cout << "\nPrimeiro e último colocados de cada partido:" << endl;
     
-    
         for(auto& partido: partidos){
             partido.candidatosDoPartido.sort([](Candidato& a, Candidato& b){
                 if(a.getVotosNominais() == b.getVotosNominais()){
+                    time_t t = time(NULL);
+                    struct tm *tm = localtime(&t);
+                    int dia = 15;
+                    int mes = 11;
+                    int ano = 2020;
+                    string data = to_string(dia) + "/" + to_string(mes) + "/" + to_string(ano);
                     return a.getIdade(data) - b.getIdade(data);
+                   
                 }
                 return a.getVotosNominais() - b.getVotosNominais();
             });
         }
 
+        // ordenando os partidos por votos nominais e por numero
+        partidos.sort([](Partido& a, Partido& b){
+            if(a.getVotosNominais() == b.getVotosNominais()){
+                return a.getNumPartido() < b.getNumPartido();
+            }
+            return a.getVotosNominais() > b.getVotosNominais();
+        });
+
+
+        
+        cont = 1;
+        for(auto& partido: partidos){
+            if(partido.getVotosLegenda() == 0 || partido.candidatosDoPartido.size() == 0){
+                continue;
+            }
+            Candidato maisVotado = partido.candidatosDoPartido.back();
+            Candidato menosVotado = partido.candidatosDoPartido.front();
+
+            if(maisVotado.getVotosNominais() > 1 && menosVotado.getVotosNominais() > 1){
+                cout << cont << " - " << partido.getSigla() << " - " << partido.getNumPartido() << ", " << maisVotado.getNomeUrna() << " (" << maisVotado.getNumero() << ", " << maisVotado.getVotosNominais() << " votos) / " << menosVotado.getNomeUrna() << " (" << menosVotado.getNumero() << ", " << menosVotado.getVotosNominais() << " votos)" << endl;
+            }
+
+            if(maisVotado.getVotosNominais() > 1 && menosVotado.getVotosNominais() <= 1){
+                cout << cont << " - " << partido.getSigla() << " - " << partido.getNumPartido() << ", " << maisVotado.getNomeUrna() << " (" << maisVotado.getNumero() << ", " << maisVotado.getVotosNominais() << " votos) / " << menosVotado.getNomeUrna() << " (" << menosVotado.getNumero() << ", " << menosVotado.getVotosNominais() << " voto)" << endl;
+            }
+
+            if(maisVotado.getVotosNominais() <= 1 && menosVotado.getVotosNominais() > 1){
+                cout << cont << " - " << partido.getSigla() << " - " << partido.getNumPartido() << ", " << maisVotado.getNomeUrna() << " (" << maisVotado.getNumero() << ", " << maisVotado.getVotosNominais() << " voto) / " << menosVotado.getNomeUrna() << " (" << menosVotado.getNumero() << ", " << menosVotado.getVotosNominais() << " votos)" << endl;
+            }
+            cont++;
+        }
+
+        // 9. Distribuição de eleitos por faixa etária, considerando a idade do candidato no dia da eleição;
+
+
+        int menorQue30 = 0;
+        int entre30e40 = 0;
+        int entre40e50 = 0;
+        int entre50e60 = 0;
+        int maiorQue60 = 0;
+
+        for(Candidato candidato : candidatosEleitos){
+            time_t t = time(NULL);
+            struct tm *tm = localtime(&t);
+            int dia = 15;
+            int mes = 11;
+            int ano = 2020;
+            string data = to_string(dia) + "/" + to_string(mes) + "/" + to_string(ano);
+
+            if(candidato.getIdade(data) < 30){
+                menorQue30++;
+            }
+            if(30 <= candidato.getIdade(data) && candidato.getIdade(data) < 40){
+                entre30e40++;
+            }
+            if(40 <= candidato.getIdade(data) && candidato.getIdade(data) < 50){
+                entre40e50++;
+            }
+            if(50 <= candidato.getIdade(data) && candidato.getIdade(data) < 60){
+                entre50e60++;
+            }
+            if(candidato.getIdade(data) >= 60){
+                maiorQue60++;
+            }
+        }
+
+        float porcentagemMenorQue30 = (float)menorQue30 / (float)candidatosEleitos.size() * 100;
+        float porcentagemEntre30e40 = (float)entre30e40 / (float)candidatosEleitos.size() * 100;
+        float porcentagemEntre40e50 = (float)entre40e50 / (float)candidatosEleitos.size() * 100;
+        float porcentagemEntre50e60 = (float)entre50e60 / (float)candidatosEleitos.size() * 100;
+        float porcentagemMaiorQue60 = (float)maiorQue60 / (float)candidatosEleitos.size() * 100;
+    
+
+
+
+
+
+
+
+
+        cout << "Eleitos, por faixa etária (na data da eleição):" << endl;
+        cout << "      Idade < 30: " << menorQue30 << " (" << fixed << setprecision(2) << porcentagemMenorQue30 << "%)" << endl;
+        cout << "      30 <= Idade < 40: " << entre30e40 << " (" << fixed << setprecision(2) << porcentagemEntre30e40 << "%)" << endl;
+        cout << "      40 <= Idade < 50: " << entre40e50 << " (" << fixed << setprecision(2) << porcentagemEntre40e50 << "%)" << endl;
+        cout << "      50 <= Idade < 60: " << entre50e60 << " (" << fixed << setprecision(2) << porcentagemEntre50e60 << "%)" << endl;
+        cout << "      Idade >= 60: " << maiorQue60 << " (" << fixed << setprecision(2) << porcentagemMaiorQue60 << "%)" << endl;
+
+
+
+        //10. Distribuição de eleitos por sexo;
+
+        int homens = 0;
+        int mulheres = 0;
+
+        for(Candidato candidato : candidatosEleitos){
+            if(candidato.getSexo() == "M"){
+                homens++;
+            }
+            if(candidato.getSexo() == "F"){
+                mulheres++;
+            }
+        }
+
+        //imprimir resultados
+        float porcentagemHomens = (float)homens / candidatosEleitos.size() * 100;
+        float porcentagemMulheres = (float)mulheres / candidatosEleitos.size() * 100;
+
+        cout << "Eleitos, por sexo:" << endl;
+        cout << "      Feminino:  " << mulheres << " (" << fixed << setprecision(2) << porcentagemMulheres << "%)" << endl;
+        cout << "      Masculino: " << homens << " (" << fixed << setprecision(2) << porcentagemHomens << "%)" << endl;
+
+
+
+        // 11. total de votos válidos
+
+        int totalVotosValidos = 0;
+        int totalVotosNominais = 0;
+        int totalVotosLegenda = 0;
+
+        for(Candidato candidato : candidatos){
+            if(candidato.getDestinoVoto() == "Válido"){
+                totalVotosNominais += candidato.getVotosNominais();
+            }
+        }
+        for(Partido partido : partidos){
+            totalVotosLegenda += partido.getVotosLegenda();
+        }
+
+        totalVotosValidos = totalVotosNominais + totalVotosLegenda;
+
+        float porcentagemNominais = (float)totalVotosNominais / totalVotosValidos * 100;
+        float porcentagemLegenda = (float)totalVotosLegenda / totalVotosValidos * 100;
+
+        cout << "Total de votos válidos:    " << totalVotosValidos << endl;
+        cout << "Total de votos nominais:   " << totalVotosNominais << " (" << fixed << setprecision(2) << porcentagemNominais << "%)" << endl;
+        cout << "Total de votos de legenda: " << totalVotosLegenda << " (" << fixed << setprecision(2) << porcentagemLegenda << "%)" << endl;
 
 
     exit(EXIT_SUCCESS);
