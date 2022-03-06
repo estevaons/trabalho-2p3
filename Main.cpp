@@ -10,6 +10,7 @@
 #include <math.h>
 #include <time.h>
 #include <iomanip>
+#include<locale.h>
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -30,8 +31,8 @@ string readFileIntoString(const string& path) {
 
 int main()
 {   
-
-  
+    setlocale(LC_ALL, "Portuguese");
+    
 
     int contador = 0;
     list<Candidato> candidatos = list<Candidato>();
@@ -148,9 +149,12 @@ int main()
     });
 
     //imprimir candidatos eleitos ordenados
-    
+    cout<<"\nVereadores eleitos:"<<endl;
+    int cont =0;
     for(auto& candidato : candidatosEleitos){
-        cout << candidato.getNumero() << " " << candidato.getVotosNominais() << " " << candidato.getSituacao() << " " << candidato.getNome() << " " << candidato.getNomeUrna() << " " << candidato.getSexo() << " " << candidato.getDataNascimento() << " " << candidato.getDestinoVoto() << " " << candidato.getNumPartido() << endl;
+        cont ++;
+        // cout << candidato.getNumero() << " " << candidato.getVotosNominais() << " " << candidato.getSituacao() << " " << candidato.getNome() << " " << candidato.getNomeUrna() << " " << candidato.getSexo() << " " << candidato.getDataNascimento() << " " << candidato.getDestinoVoto() << " " << candidato.getNumPartido() << endl;
+        cout << cont<<" - "<<candidato.getNome()<<" / "<<candidato.getNomeUrna()<<" ("<<partidos_map.at(candidato.getNumPartido()).getSigla()<<", "<<candidato.getVotosNominais()<<" votos)"<< endl;
     }
 
  
@@ -159,7 +163,7 @@ int main()
     // 3.imprimir candidatos mais votados dentro do numero de vagas
 
     cout <<"\nCandidatos mais votados (em ordem decrescente de votação e respeitando número de vagas):" << endl;
-    int cont = 0;
+    cont = 0;
     for(auto& candidato: candidatos){
         if(cont < numeroEleitos){
             cont ++;
@@ -179,7 +183,7 @@ int main()
         if(cont2 < numeroEleitos){
             cont2++;
             if(candidato.getSituacao() == "Não eleito" || candidato.getSituacao() == "Suplente"){
-               cout<<candidato.getRank()<<" - " << candidato.getNome() <<" / "<< candidato.getNomeUrna()<<" (" <<partidos_map.at(candidato.getNumPartido()).getSigla()<<", " <<candidato.getVotosNominais()<<" votos )"<< endl;
+               cout<<candidato.getRank()<<" - " << candidato.getNome() <<" / "<< candidato.getNomeUrna()<<" (" <<partidos_map.at(candidato.getNumPartido()).getSigla()<<", " <<candidato.getVotosNominais()<<" votos)"<< endl;
             }
         }
     }
@@ -205,7 +209,7 @@ int main()
 
     for(auto& candidato : candidatosEleitos){
         if(candidato.getVotosNominais() < menorVotos){
-            cout << candidato.getRank() << " - " << candidato.getNome() << " / " << candidato.getNomeUrna() << " (" << partidos_map.at(candidato.getNumPartido()).getSigla() << ", " << candidato.getVotosNominais() << " votos )" << endl;
+            cout << candidato.getRank() << " - " << candidato.getNome() << " / " << candidato.getNomeUrna() << " (" << partidos_map.at(candidato.getNumPartido()).getSigla() << ", " << candidato.getVotosNominais() << " votos)" << endl;
         }
     }
 
@@ -283,9 +287,9 @@ int main()
             if(partido.getVotosLegenda() != 0){
                 float porcentagem = (float)partido.getVotosLegenda() / (float)partido.getVotosTotais() * 100;
                 //duas casas decimais
-                porcentagem = roundf(porcentagem * 100) / 100;
+
                 cont++;
-                cout << cont << " - " << partido.getSigla() << " - " << partido.getNumPartido() << ", " << partido.getVotosLegenda() << " votos de legenda (" << porcentagem << "%)" << endl;
+                cout << cont << " - " << partido.getSigla() << " - " << partido.getNumPartido() << ", " << partido.getVotosLegenda() << " votos de legenda (" << fixed << setprecision(2) << porcentagem << "% do total do partido)" << endl;
             }else{
                 cont++;
                 cout << cont << " - " << partido.getSigla() << " - " << partido.getNumPartido() << ", " << partido.getVotosLegenda() << " voto de legenda (proporção não calculada, 0 voto no partido)" << endl;
@@ -308,10 +312,10 @@ int main()
                     int mes = 11;
                     int ano = 2020;
                     string data = to_string(dia) + "/" + to_string(mes) + "/" + to_string(ano);
-                    return a.getIdade(data) - b.getIdade(data);
+                    return b.getIdade(data) - a.getIdade(data);
                    
                 }
-                return a.getVotosNominais() - b.getVotosNominais();
+                return b.getVotosNominais() - a.getVotosNominais();
             });
         }
 
@@ -320,7 +324,7 @@ int main()
             if(a.getVotosNominais() == b.getVotosNominais()){
                 return a.getNumPartido() < b.getNumPartido();
             }
-            return a.getVotosNominais() > b.getVotosNominais();
+            return b.candidatosDoPartido.back().getVotosNominais() < a.candidatosDoPartido.back().getVotosNominais();
         });
 
 
@@ -397,10 +401,10 @@ int main()
 
         cout << "Eleitos, por faixa etária (na data da eleição):" << endl;
         cout << "      Idade < 30: " << menorQue30 << " (" << fixed << setprecision(2) << porcentagemMenorQue30 << "%)" << endl;
-        cout << "      30 <= Idade < 40: " << entre30e40 << " (" << fixed << setprecision(2) << porcentagemEntre30e40 << "%)" << endl;
-        cout << "      40 <= Idade < 50: " << entre40e50 << " (" << fixed << setprecision(2) << porcentagemEntre40e50 << "%)" << endl;
-        cout << "      50 <= Idade < 60: " << entre50e60 << " (" << fixed << setprecision(2) << porcentagemEntre50e60 << "%)" << endl;
-        cout << "      Idade >= 60: " << maiorQue60 << " (" << fixed << setprecision(2) << porcentagemMaiorQue60 << "%)" << endl;
+        cout << "30 <= Idade < 40: " << entre30e40 << " (" << fixed << setprecision(2) << porcentagemEntre30e40 << "%)" << endl;
+        cout << "40 <= Idade < 50: " << entre40e50 << " (" << fixed << setprecision(2) << porcentagemEntre40e50 << "%)" << endl;
+        cout << "50 <= Idade < 60: " << entre50e60 << " (" << fixed << setprecision(2) << porcentagemEntre50e60 << "%)" << endl;
+        cout << "60 <= Idade     : " << maiorQue60 << " (" << fixed << setprecision(2) << porcentagemMaiorQue60 << "%)" << endl;
 
 
 
@@ -423,8 +427,8 @@ int main()
         float porcentagemMulheres = (float)mulheres / candidatosEleitos.size() * 100;
 
         cout << "Eleitos, por sexo:" << endl;
-        cout << "      Feminino:  " << mulheres << " (" << fixed << setprecision(2) << porcentagemMulheres << "%)" << endl;
-        cout << "      Masculino: " << homens << " (" << fixed << setprecision(2) << porcentagemHomens << "%)" << endl;
+        cout << "Feminino:  " << mulheres << " (" << fixed << setprecision(2) << porcentagemMulheres << "%)" << endl;
+        cout << "Masculino: " << homens << " (" << fixed << setprecision(2) << porcentagemHomens << "%)" << endl;
 
 
 
