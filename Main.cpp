@@ -61,6 +61,9 @@ int main()
             continue;
         }
         Candidato candidato(stoi(row[0]), stoi(row[1]), row[2], row[3], row[4], row[5],row[6], row[7], stoi(row[8]));
+        if(candidato.getDestinoVoto() != "Válido"){
+            continue;
+        }
         candidatos.push_back(candidato);
     }
   
@@ -99,11 +102,12 @@ int main()
     //ordenar candidatos pelo numero de votos e por idade
     candidatos.sort([](Candidato& a, Candidato& b){
         if(a.getVotosNominais() == b.getVotosNominais()){
-            return a.getDataNascimento() < b.getDataNascimento();
+            return a.getDataNascimento() > b.getDataNascimento();
         }
         return a.getVotosNominais() > b.getVotosNominais();
     });
-      // setando o rank de cada candidato de acordo com seu numero de votos
+
+   // setando o rank de cada candidato de acordo com seu numero de votos
     int rank = 1;
     for(auto& candidato : candidatos){
         candidato.setRank(rank);
@@ -148,6 +152,9 @@ int main()
         return a.getVotosNominais() > b.getVotosNominais();
     });
 
+ 
+
+
     //imprimir candidatos eleitos ordenados
     cout<<"\nVereadores eleitos:"<<endl;
     int cont =0;
@@ -170,6 +177,7 @@ int main()
             cout << cont<<" - "<<candidato.getNome()<<" / "<<candidato.getNomeUrna()<<" ("<<partidos_map.at(candidato.getNumPartido()).getSigla()<<", "<<candidato.getVotosNominais()<<" votos)"<< endl;
         }
     }
+    
   
 
     // 4. Candidatos não eleitos e que seriam eleitos se a votação fosse majoritária
@@ -203,6 +211,8 @@ int main()
         }
         cont3 ++;
     }
+
+
 
     cout << "\nEleitos, que se beneficiaram do sistema proporcional:" << endl;
     cout << "(com sua posição no ranking de mais votados)" << endl;
@@ -306,16 +316,10 @@ int main()
         for(auto& partido: partidos){
             partido.candidatosDoPartido.sort([](Candidato& a, Candidato& b){
                 if(a.getVotosNominais() == b.getVotosNominais()){
-                    time_t t = time(NULL);
-                    struct tm *tm = localtime(&t);
-                    int dia = 15;
-                    int mes = 11;
-                    int ano = 2020;
-                    string data = to_string(dia) + "/" + to_string(mes) + "/" + to_string(ano);
-                    return b.getIdade(data) - a.getIdade(data);
+                    return a.getDataNascimento() < b.getDataNascimento();
                    
                 }
-                return b.getVotosNominais() - a.getVotosNominais();
+                return b.getVotosNominais() > a.getVotosNominais();
             });
         }
 
