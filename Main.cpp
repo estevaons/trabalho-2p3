@@ -11,12 +11,17 @@
 #include <math.h>
 #include <time.h>
 #include <iomanip>
+#include<locale>
 #include<locale.h>
+#include <clocale>
+#include<sstream>
+
 
 #include<stdio.h>
 #include<stdlib.h>
 
 using namespace std;
+
 
 string readFileIntoString(const string& path) {
     auto ss = ostringstream{};
@@ -32,8 +37,7 @@ string readFileIntoString(const string& path) {
 
 int main()
 {   
-    setlocale(LC_ALL, "Portuguese");
-    
+    setlocale(LC_ALL, "pt_BR.UTF-8");
 
     int contador = 0;
     list<Candidato> candidatos = list<Candidato>();
@@ -117,16 +121,11 @@ int main()
         rank++;
     }
 
-    // 1.imprimir candidatos eleitos
-
-    //criar mapa de partidos
     map<int, Partido> partidos_map;
 
     for(auto& partido : partidos){
         partidos_map.insert(pair<int, Partido>(partido.getNumPartido(), partido));
     }
-
-    //calculando numero de eletios
 
     //crindo lista de candidatos eleitos
     list<Candidato> candidatosEleitos = list<Candidato>();
@@ -137,7 +136,7 @@ int main()
             }
         }
     }
-    
+
     int numeroEleitos = relatorios.calculaRelatorioUm(candidatos);
 
     relatorios.calculaRelatorioDois(candidatosEleitos, partidos_map);

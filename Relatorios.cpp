@@ -37,8 +37,7 @@ void Relatorios::calculaRelatorioDois(list <Candidato> candidatosEleitos, map <i
     int cont =0;
     for(auto& candidato : candidatosEleitos){
         cont ++;
-        // cout << candidato.getNumero() << " " << candidato.getVotosNominais() << " " << candidato.getSituacao() << " " << candidato.getNome() << " " << candidato.getNomeUrna() << " " << candidato.getSexo() << " " << candidato.getDataNascimento() << " " << candidato.getDestinoVoto() << " " << candidato.getNumPartido() << endl;
-        cout << cont<<" - "<<candidato.getNome()<<" / "<<candidato.getNomeUrna()<<" ("<<partidos_map.at(candidato.getNumPartido()).getSigla()<<", "<<candidato.getVotosNominais()<<" votos)"<< endl;
+        printf("%d - %s / %s (%s, %d votos)\n",cont,candidato.getNome().c_str(),candidato.getNomeUrna().c_str(),partidos_map.at(candidato.getNumPartido()).getSigla().c_str(),candidato.getVotosNominais());
     }
 }
 
@@ -49,7 +48,7 @@ void Relatorios::calculaRelatorioTres(list <Candidato> candidatos, map <int, Par
     for(auto& candidato: candidatos){
         if(cont < numeroEleitos){
             cont ++;
-            cout << cont<<" - "<<candidato.getNome()<<" / "<<candidato.getNomeUrna()<<" ("<<partidos_map.at(candidato.getNumPartido()).getSigla()<<", "<<candidato.getVotosNominais()<<" votos)"<< endl;
+            printf("%d - %s / %s (%s, %d votos)\n",cont,candidato.getNome().c_str(),candidato.getNomeUrna().c_str(),partidos_map.at(candidato.getNumPartido()).getSigla().c_str(),candidato.getVotosNominais());
         }
     }
 }
@@ -64,7 +63,7 @@ void Relatorios::calculaRelatorioQuatro(list <Candidato> candidatos, map <int, P
         if(cont2 < numeroEleitos){
             cont2++;
             if(candidato.getSituacao() == "Não eleito" || candidato.getSituacao() == "Suplente"){
-               cout<<candidato.getRank()<<" - " << candidato.getNome() <<" / "<< candidato.getNomeUrna()<<" (" <<partidos_map.at(candidato.getNumPartido()).getSigla()<<", " <<candidato.getVotosNominais()<<" votos)"<< endl;
+                printf("%d - %s / %s (%s, %d votos)\n",cont2,candidato.getNome().c_str(),candidato.getNomeUrna().c_str(),partidos_map.at(candidato.getNumPartido()).getSigla().c_str(),candidato.getVotosNominais());
             }
         }
     }
@@ -91,7 +90,7 @@ void Relatorios::calculaRelatorioCinco(list <Candidato> candidatos,list <Candida
 
     for(auto& candidato : candidatosEleitos){
         if(candidato.getVotosNominais() < menorVotos){
-            cout << candidato.getRank() << " - " << candidato.getNome() << " / " << candidato.getNomeUrna() << " (" << partidos_map.at(candidato.getNumPartido()).getSigla() << ", " << candidato.getVotosNominais() << " votos)" << endl;
+            printf("%d - %s / %s (%s, %d votos)\n",candidato.getRank(),candidato.getNome().c_str(),candidato.getNomeUrna().c_str(),partidos_map.at(candidato.getNumPartido()).getSigla().c_str(),candidato.getVotosNominais());
         }
     }
 }
@@ -127,25 +126,25 @@ void Relatorios::calculaRelatorioSeis(list <Partido> partidos, list<Candidato> c
         for(auto& partido: partidos){
             cont++;
             if(partido.getVotosTotais() > 1 && partido.getVotosNominais() > 1 && partido.getQtdEleitos() > 1){
-                cout << cont << " - " << partido.getSigla() << " - " << partido.getNumPartido() << ", " << partido.getVotosTotais() << " votos (" << partido.getVotosNominais() << " nominais e " << partido.getVotosLegenda() << " de legenda), " << partido.getQtdEleitos() << " candidatos eleitos" << endl;
+                printf("%d - %s - %d, %d votos (%d nominais e %d de legenda), %d candidatos eleitos\n",cont,partido.getSigla().c_str(),partido.getNumPartido(),partido.getVotosTotais(),partido.getVotosNominais(),partido.getVotosLegenda(),partido.getQtdEleitos());
             }
 
             if(partido.getVotosTotais() > 1 && partido.getVotosNominais() <= 1 && partido.getQtdEleitos() <= 1){
-                cout << cont << " - " << partido.getSigla() << " - " << partido.getNumPartido() << ", " << partido.getVotosTotais() << " votos (" << partido.getVotosNominais() << " nominal e " << partido.getVotosLegenda() << " de legenda), " << partido.getQtdEleitos() << " candidato eleito" << endl;
+                printf("%d - %s - %d, %d votos (%d nominal e %d de legenda), %d candidato eleito\n",cont,partido.getSigla().c_str(),partido.getNumPartido(),partido.getVotosTotais(),partido.getVotosNominais(),partido.getVotosLegenda(),partido.getQtdEleitos());
             }
 
             if(partido.getVotosTotais() > 1 && partido.getVotosNominais() > 1 && partido.getQtdEleitos() <= 1){
-                cout << cont << " - " << partido.getSigla() << " - " << partido.getNumPartido() << ", " << partido.getVotosTotais() << " votos (" << partido.getVotosNominais() << " nominais e " << partido.getVotosLegenda() << " de legenda), " << partido.getQtdEleitos() << " candidato eleito" << endl;
+                printf("%d - %s - %d, %d votos (%d nominais e %d de legenda), %d candidato eleito\n",cont,partido.getSigla().c_str(),partido.getNumPartido(),partido.getVotosTotais(),partido.getVotosNominais(),partido.getVotosLegenda(),partido.getQtdEleitos());
             }
 
             if(partido.getVotosTotais() > 1 && partido.getVotosNominais() <= 1 && partido.getQtdEleitos() > 1){
-                cout << cont << " - " << partido.getSigla() << " - " << partido.getNumPartido() << ", " << partido.getVotosTotais() << " votos (" << partido.getVotosNominais() << " nominal e " << partido.getVotosLegenda() << " de legenda), " << partido.getQtdEleitos() << " candidatos eleitos" << endl;
+                printf("%d - %s - %d, %d votos (%d nominal e %d de legenda), %d candidatos eleitos\n",cont,partido.getSigla().c_str(),partido.getNumPartido(),partido.getVotosTotais(),partido.getVotosNominais(),partido.getVotosLegenda(),partido.getQtdEleitos());
             }
             if(partido.getVotosTotais() <= 1 && partido.getVotosNominais() <= 1 && partido.getQtdEleitos() <= 1){
-                cout << cont << " - " << partido.getSigla() << " - " << partido.getNumPartido() << ", " << partido.getVotosTotais() << " voto (" << partido.getVotosNominais() << " nominal e " << partido.getVotosLegenda() << " de legenda), " << partido.getQtdEleitos() << " candidato eleito" << endl;
+                printf("%d - %s - %d, %d voto (%d nominal e %d de legenda), %d candidato eleito\n",cont,partido.getSigla().c_str(),partido.getNumPartido(),partido.getVotosTotais(),partido.getVotosNominais(),partido.getVotosLegenda(),partido.getQtdEleitos());
             }
             if(partido.getVotosTotais() <= 1 && partido.getVotosNominais() <= 1 && partido.getQtdEleitos() > 1){
-                cout << cont << " - " << partido.getSigla() << " - " << partido.getNumPartido() << ", " << partido.getVotosTotais() << " voto (" << partido.getVotosNominais() << " nominal e " << partido.getVotosLegenda() << " de legenda), " << partido.getQtdEleitos() << " candidatos eleitos" << endl;
+                printf("%d - %s - %d, %d voto (%d nominal e %d de legenda), %d candidatos eleitos\n",cont,partido.getSigla().c_str(),partido.getNumPartido(),partido.getVotosTotais(),partido.getVotosNominais(),partido.getVotosLegenda(),partido.getQtdEleitos());
             }
         }
 
@@ -181,13 +180,11 @@ void Relatorios::calculaRelatorioSete(list <Partido> partidos, list<Candidato> c
     for(auto& partido: partidos){
         if(partido.getVotosLegenda() != 0){
             float porcentagem = (float)partido.getVotosLegenda() / (float)partido.getVotosTotais() * 100;
-            //duas casas decimais
-
             cont++;
-            cout << cont << " - " << partido.getSigla() << " - " << partido.getNumPartido() << ", " << partido.getVotosLegenda() << " votos de legenda (" << fixed << setprecision(2) << porcentagem << "% do total do partido)" << endl;
+            printf("%d - %s - %d, %d votos de legenda (%0.2f%% do total do partido)\n",cont,partido.getSigla().c_str(),partido.getNumPartido(),partido.getVotosLegenda(),porcentagem);
         }else{
             cont++;
-            cout << cont << " - " << partido.getSigla() << " - " << partido.getNumPartido() << ", " << partido.getVotosLegenda() << " voto de legenda (proporção não calculada, 0 voto no partido)" << endl;
+            printf("%d - %s - %d, %d voto de legenda (proporção não calculada, 0 voto no partido)\n",cont,partido.getSigla().c_str(),partido.getNumPartido(),partido.getVotosLegenda());
             continue;
         }
     }
@@ -242,15 +239,15 @@ void Relatorios::calculaRelatorioOito(list <Partido> partidos, list<Candidato> c
             Candidato menosVotado = partido.candidatosDoPartido.front();
 
             if(maisVotado.getVotosNominais() > 1 && menosVotado.getVotosNominais() > 1){
-                cout << cont << " - " << partido.getSigla() << " - " << partido.getNumPartido() << ", " << maisVotado.getNomeUrna() << " (" << maisVotado.getNumero() << ", " << maisVotado.getVotosNominais() << " votos) / " << menosVotado.getNomeUrna() << " (" << menosVotado.getNumero() << ", " << menosVotado.getVotosNominais() << " votos)" << endl;
+                printf("%d - %s - %d, %s (%d, %d votos) / %s (%d, %d votos)\n",cont,partido.getSigla().c_str(),partido.getNumPartido(),maisVotado.getNomeUrna().c_str(),maisVotado.getNumero(),maisVotado.getVotosNominais(),menosVotado.getNomeUrna().c_str(),menosVotado.getNumero(),menosVotado.getVotosNominais());
             }
 
             if(maisVotado.getVotosNominais() > 1 && menosVotado.getVotosNominais() <= 1){
-                cout << cont << " - " << partido.getSigla() << " - " << partido.getNumPartido() << ", " << maisVotado.getNomeUrna() << " (" << maisVotado.getNumero() << ", " << maisVotado.getVotosNominais() << " votos) / " << menosVotado.getNomeUrna() << " (" << menosVotado.getNumero() << ", " << menosVotado.getVotosNominais() << " voto)" << endl;
+                printf("%d - %s - %d, %s (%d, %d votos) / %s (%d, %d voto)\n",cont,partido.getSigla().c_str(),partido.getNumPartido(),maisVotado.getNomeUrna().c_str(),maisVotado.getNumero(),maisVotado.getVotosNominais(),menosVotado.getNomeUrna().c_str(),menosVotado.getNumero(),menosVotado.getVotosNominais());
             }
 
             if(maisVotado.getVotosNominais() <= 1 && menosVotado.getVotosNominais() > 1){
-                cout << cont << " - " << partido.getSigla() << " - " << partido.getNumPartido() << ", " << maisVotado.getNomeUrna() << " (" << maisVotado.getNumero() << ", " << maisVotado.getVotosNominais() << " voto) / " << menosVotado.getNomeUrna() << " (" << menosVotado.getNumero() << ", " << menosVotado.getVotosNominais() << " votos)" << endl;
+                printf("%d - %s - %d, %s (%d, %d voto) / %s (%d, %d votos)\n",cont,partido.getSigla().c_str(),partido.getNumPartido(),maisVotado.getNomeUrna().c_str(),maisVotado.getNumero(),maisVotado.getVotosNominais(),menosVotado.getNomeUrna().c_str(),menosVotado.getNumero(),menosVotado.getVotosNominais());
             }
             cont++;
         }
@@ -296,20 +293,12 @@ void Relatorios::calculaRelatorioNove(list <Candidato> candidatosEleitos){
     float porcentagemMaiorQue60 = (float)maiorQue60 / (float)candidatosEleitos.size() * 100;
 
 
-
-
-
-
-
-
-
-    cout << "\nEleitos, por faixa etária (na data da eleição):" << endl;
-    cout << "      Idade < 30: " << menorQue30 << " (" << fixed << setprecision(2) << porcentagemMenorQue30 << "%)" << endl;
-    cout << "30 <= Idade < 40: " << entre30e40 << " (" << fixed << setprecision(2) << porcentagemEntre30e40 << "%)" << endl;
-    cout << "40 <= Idade < 50: " << entre40e50 << " (" << fixed << setprecision(2) << porcentagemEntre40e50 << "%)" << endl;
-    cout << "50 <= Idade < 60: " << entre50e60 << " (" << fixed << setprecision(2) << porcentagemEntre50e60 << "%)" << endl;
-    cout << "60 <= Idade     : " << maiorQue60 << " (" << fixed << setprecision(2) << porcentagemMaiorQue60 << "%)" << endl;
-
+    printf("\nEleitos, por faixa etária (na data da eleição):\n");
+    printf("      Idade < 30: %d (%0.2f%%)\n",menorQue30,porcentagemMenorQue30);
+    printf("30 <= Idade < 40: %d (%0.2f%%)\n",entre30e40,porcentagemEntre30e40);
+    printf("40 <= Idade < 50: %d (%0.2f%%)\n",entre40e50,porcentagemEntre40e50);
+    printf("50 <= Idade < 60: %d (%0.2f%%)\n",entre50e60,porcentagemEntre50e60);
+    printf("60 <= Idade     : %d (%0.2f%%)\n",maiorQue60,porcentagemMaiorQue60);
 
 }
 
@@ -330,9 +319,9 @@ void Relatorios::calculaRelatorioDez(list <Candidato> candidatosEleitos){
     float porcentagemHomens = (float)homens / candidatosEleitos.size() * 100;
     float porcentagemMulheres = (float)mulheres / candidatosEleitos.size() * 100;
 
-    cout << "Eleitos, por sexo:" << endl;
-    cout << "Feminino:  " << mulheres << " (" << fixed << setprecision(2) << porcentagemMulheres << "%)" << endl;
-    cout << "Masculino: " << homens << " (" << fixed << setprecision(2) << porcentagemHomens << "%)" << endl;
+    printf("\nEleitos, por sexo:\n");
+    printf("Feminino:  %d (%.2f%%)\n", mulheres, porcentagemMulheres);
+    printf("Masculino: %d (%.2f%%)\n", homens, porcentagemHomens);
 }
 
 void Relatorios::calculaRelatorioOnze(list <Candidato> candidatos, list <Partido> partidos){
@@ -354,8 +343,8 @@ void Relatorios::calculaRelatorioOnze(list <Candidato> candidatos, list <Partido
     float porcentagemNominais = (float)totalVotosNominais / totalVotosValidos * 100;
     float porcentagemLegenda = (float)totalVotosLegenda / totalVotosValidos * 100;
 
-    cout << "Total de votos válidos:    " << totalVotosValidos << endl;
-    cout << "Total de votos nominais:   " << totalVotosNominais << " (" << fixed << setprecision(2) << porcentagemNominais << "%)" << endl;
-    cout << "Total de votos de legenda: " << totalVotosLegenda << " (" << fixed << setprecision(2) << porcentagemLegenda << "%)" << endl;
+    printf("\nTotal de votos válidos:    %d\n", totalVotosValidos);
+    printf("Total de votos nominais:   %d (%0.2f%%)\n", totalVotosNominais, porcentagemNominais);
+    printf("Total de votos de legenda: %d (%0.2f%%)\n\n", totalVotosLegenda, porcentagemLegenda);
 
 }
