@@ -213,6 +213,7 @@ Primeiro e último colocados de cada partido:
 30 - PSTU - 16, VANESSA PORTUGAL (16123, 1412 votos) / VANESSA PORTUGAL (16123, 1412 votos)
 31 - PCB - 21, DIEGO MIRANDA (21000, 353 votos) / SOUZA DANTAS (21800, 18 votos)
 32 - PCO - 29, CÉLIO ELIAS (29000, 63 votos) / CÉLIO ELIAS (29000, 63 votos)
+
 Eleitos, por faixa etária (na data da eleição):
       Idade < 30: 4 (9.76%)
 30 <= Idade < 40: 7 (17.07%)
