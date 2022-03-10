@@ -4,6 +4,7 @@
 #include <map>
 #include <iostream>
 #include <iomanip>  
+#include<stdio.h>
 
 using namespace std;
 
@@ -169,7 +170,7 @@ void Relatorios::calculaRelatorioSete(list <Partido> partidos, list<Candidato> c
             if(a.getVotosNominais() == b.getVotosNominais()){
                 return a.getNumPartido() < b.getNumPartido();
             }
-            return a.getNumPartido() < b.getNumPartido();
+            return a.getVotosNominais() > b.getVotosNominais();
         }
         return a.getVotosLegenda() > b.getVotosLegenda();
     });
@@ -208,24 +209,33 @@ void Relatorios::calculaRelatorioOito(list <Partido> partidos, list<Candidato> c
 
 
 
-              cout << "\nPrimeiro e último colocados de cada partido:" << endl;
+        cout << "\nPrimeiro e último colocados de cada partido:" << endl;
+        
     
         for(auto& partido: partidos){
             partido.candidatosDoPartido.sort([](Candidato& a, Candidato& b){
+               //ordernar pela data de nasciemnto se os votos forem iguais com proferencia para o mais velho
                 if(a.getVotosNominais() == b.getVotosNominais()){
-                    return a.getDataNascimento() < b.getDataNascimento();
-                   
+                    return a.getIdade("20/11/2500") < b.getIdade("20/11/2500");
                 }
+               
+
                 return b.getVotosNominais() > a.getVotosNominais();
             });
         }
 
+
         // ordenando os partidos por votos nominais e por numero
         partidos.sort([](Partido& a, Partido& b){
-            if(a.getVotosNominais() == b.getVotosNominais()){
+            if(a.candidatosDoPartido.size() == 0 || b.candidatosDoPartido.size() == 0){
+                return false;
+            }
+
+            if(a.candidatosDoPartido.back().getVotosNominais() == b.candidatosDoPartido.back().getVotosNominais()){
+                
                 return a.getNumPartido() < b.getNumPartido();
             }
-            return b.candidatosDoPartido.back().getVotosNominais() < a.candidatosDoPartido.back().getVotosNominais();
+            return a.candidatosDoPartido.back().getVotosNominais() > b.candidatosDoPartido.back().getVotosNominais();
         });
 
 
@@ -235,6 +245,7 @@ void Relatorios::calculaRelatorioOito(list <Partido> partidos, list<Candidato> c
             if(partido.getVotosLegenda() == 0 || partido.candidatosDoPartido.size() == 0){
                 continue;
             }
+            // printf("\nMais votado do partido %s : %s com %d votos.\n",partido.getSigla().c_str(),partido.candidatosDoPartido.back().getNomeUrna().c_str(),partido.candidatosDoPartido.back().getVotosNominais());
             Candidato maisVotado = partido.candidatosDoPartido.back();
             Candidato menosVotado = partido.candidatosDoPartido.front();
 
