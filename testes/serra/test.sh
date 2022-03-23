@@ -13,42 +13,18 @@ subOut=$8
 diffCmd=$9
 
 # Variables.
-tempFile="$tempDir/temp.txt"
 outFile=output.txt
-javaPrefix="[java]"
-
-# Function: finds the index of a given substring ($1) in a string ($2).
-indexOf() {
-	substring=$1
-	string=$2
-	
-	# If the substring is not present in the string, returns -1.
-	if [[ $string == *"$substring"* ]]; then
-		temp=${string/"$substring"*/}
-		echo ${#temp}
-	else 
-		echo -1
-	fi
-}
 
 # Runs the program.
 cd $srcDir
-ant run > $tempFile 2> /dev/null
+make run &> $outFile
 exitcode=$?
-
-# Copies to output.txt only the Java output.
-rm $outFile 2> /dev/null
-while read line; do
-	idx=$(indexOf "$javaPrefix" "$line")
-	if [ $idx -ne -1 ]; then
-		echo "${line:7}" >> $outFile
-	fi
-done < $tempFile
 cd - > /dev/null
 
 
 # Checks if the program ran normally.
 if [ $exitcode = 0 ]; then
+
 	# Compares the result with the expected output.
 	for output in `ls $testDir/$subOut`; do
 		# Defines where to store the result of the diff.
@@ -79,5 +55,6 @@ if [ $exitcode = 0 ]; then
 	done
 else
 	# Program returned with exit code different than 0. Something wrong happened.
-	echo "[E] Testando $dir: teste ${testId}, erro na execução!  (Ant exit code $exitcode)"
+	echo "[E] Testando $dir: teste ${testId}, erro na execução!  (Make exit code $exitcode)"
+	cat $outFile
 fi
