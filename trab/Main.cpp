@@ -8,6 +8,7 @@
 #include "Candidato.h"
 #include "Partido.h"
 #include "Relatorios.h"
+#include "LeitorCSV.h"
 #include <math.h>
 #include <time.h>
 #include <iomanip>
@@ -23,53 +24,32 @@
 using namespace std;
 
 
-string readFileIntoString(const string& path) {
-    auto ss = ostringstream{};
-    ifstream input_file(path);
-    if (!input_file.is_open()) {
-        cerr << "Could not open the file - '"
-             << path << "'" << endl;
-        exit(EXIT_FAILURE);
-    }
-    ss << input_file.rdbuf();
-    return ss.str();
-}
-
 int main()
 {   
     setlocale(LC_ALL, "pt_BR.UTF-8");
 
     int contador = 0;
     list<Candidato> candidatos = list<Candidato>();
-    string filename("candidatos.csv");
-    string file_contents;
 
+    /* Faz a leitura do candidatos.csv */
 
-    //list de vetores
+    // string file_contents;
     list<vector<string>> csv_contents;
-    file_contents = readFileIntoString(filename);
-    istringstream iss(file_contents);
-    string line;
-    while (getline(iss, line)) {
-        istringstream line_stream(line);
-        string cell;
-        vector<string> csv_row;
-
-        while (getline(line_stream, cell, ',')) {
-            csv_row.push_back(cell);
-        }
-        csv_contents.push_back(csv_row);
-    }
+   
+    LeitorCSV leitor = LeitorCSV();
+    csv_contents = leitor.LerCSV("candidatos.csv");
     for (auto& row : csv_contents) {
         if(contador == 0){
             contador++;
             continue;
         }
 
+        /* Retira o espaço vazio no final do nome caso houver */
         if(row[4][row[4].length()-1] == ' '){
             row[4].erase(row[4].length()-1);
         }
 
+        /* Cria um boolean para a variavel destinoVoto recebida pelo csv */
         bool destinoVoto;
         if(row[7] =="Válido"){
             destinoVoto = true;
@@ -77,6 +57,7 @@ int main()
             destinoVoto = false;
         }
 
+        /* Cria um candidato e o adiciona na lista de candidatos*/
         Candidato candidato(stoi(row[0]), stoi(row[1]), row[2], row[3], row[4], row[5],row[6], destinoVoto, stoi(row[8]));
         
         if(candidato.getDestinoVoto() == false){
@@ -85,29 +66,13 @@ int main()
         candidatos.push_back(candidato);
     }
   
-
-
     contador = 0;
     list<Partido> partidos = list<Partido>();
-    string filename_2("partidos.csv");
-    string file_contents_2;
 
-
+    
     //list de vetores
-    list<vector<string>> csv_contents_2;
-    file_contents_2 = readFileIntoString(filename_2);
-    istringstream iss_2(file_contents_2);
-    string line_2;
-    while (getline(iss_2, line_2)) {
-        istringstream line_stream(line_2);
-        string cell;
-        vector<string> csv_row;
+    list<vector<string>> csv_contents_2 = leitor.LerCSV("partidos.csv");
 
-        while (getline(line_stream, cell, ',')) {
-            csv_row.push_back(cell);
-        }
-        csv_contents_2.push_back(csv_row);
-    }
     for (auto& row : csv_contents_2) {
         if(contador == 0){
             contador++;
@@ -150,6 +115,7 @@ int main()
         }
     }
 
+/* Calculando os relatorios */
     int numeroEleitos = relatorios.calculaRelatorioUm(candidatos);
 
     relatorios.calculaRelatorioDois(candidatosEleitos, partidos_map);
