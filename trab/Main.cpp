@@ -33,7 +33,6 @@ int main()
 
     /* Faz a leitura do candidatos.csv */
 
-    // string file_contents;
     list<vector<string>> csv_contents;
    
     LeitorCSV leitor = LeitorCSV();
